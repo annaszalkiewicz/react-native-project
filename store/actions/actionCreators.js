@@ -84,10 +84,20 @@ export const setPlaces = places => {
 }
 
 export const deletePlace = key => {
-  return {
-    type: DELETE_PLACE,
-    key
-  };
+  return dispatch => {
+    fetch('https://awesome-places-7495b.firebaseio.com/places/' + key + '.json', {
+      method: 'DELETE'
+    })
+    .catch(err => console.log(err))
+    .then(res => res.json())
+    .then(parsedRes => {
+      console.log(('Deleted place!'));
+    })
+  }
+  // return {
+  //   type: DELETE_PLACE,
+  //   key
+  // };
 };
 
 export const updateMode = () => {
