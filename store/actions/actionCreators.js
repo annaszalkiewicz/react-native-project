@@ -1,6 +1,11 @@
 // import { ADD_PLACE, DELETE_PLACE, SELECT_PLACE, DESELECT_PLACE } from './actionsTypes';
-import { SET_PLACES, DELETE_PLACE, UPDATE_MODE, TRY_AUTH } from "./actionsTypes";
-import { startLoading, stopLoading } from './uiActions';
+import {
+  SET_PLACES,
+  DELETE_PLACE,
+  UPDATE_MODE,
+  TRY_AUTH
+} from "./actionsTypes";
+import { startLoading, stopLoading } from "./uiActions";
 
 export const addPlace = (name, location, image) => {
   return dispatch => {
@@ -15,8 +20,8 @@ export const addPlace = (name, location, image) => {
       }
     )
       .catch(err => {
-        console.log(err)
-        alert('Something went wrong. Please try again :(');
+        console.log(err);
+        alert("Something went wrong. Please try again :(");
         dispatch(stopLoading());
       })
       .then(res => res.json())
@@ -34,18 +39,17 @@ export const addPlace = (name, location, image) => {
             body: JSON.stringify(placeData)
           }
         )
-        .catch(err => {
-          console.log(err)
-          alert('Something went wrong. Please try again :(');
-          dispatch(stopLoading());
-        })
-        .then(res => res.json())
-        .then(parsedRes => {
-          console.log(parsedRes);
-          dispatch(stopLoading());
-        })
-      })
-
+          .catch(err => {
+            console.log(err);
+            alert("Something went wrong. Please try again :(");
+            dispatch(stopLoading());
+          })
+          .then(res => res.json())
+          .then(parsedRes => {
+            console.log(parsedRes);
+            dispatch(stopLoading());
+          });
+      });
   };
   // return {
   //   type: ADD_PLACE,
@@ -57,47 +61,53 @@ export const addPlace = (name, location, image) => {
 
 export const getPlaces = () => {
   return dispatch => {
-    fetch('https://awesome-places-7495b.firebaseio.com/places.json')
-    .catch(err => console.log(err))
-    .then(res => res.json())
-    .then(parsedRes => {
-      const places = [];
-      for (let key in parsedRes) {
-        places.push({
-          ...parsedRes[key],
-          image: {
-            uri: parsedRes[key].image
-          },
-          key: key
-        })
+    fetch("https://awesome-places-7495b.firebaseio.com/places.json")
+      .catch(err => console.log(err))
+      .then(res => res.json())
+      .then(parsedRes => {
+        const places = [];
+        for (let key in parsedRes) {
+          places.push({
+            ...parsedRes[key],
+            image: {
+              uri: parsedRes[key].image
+            },
+            key: key
+          });
         }
-      dispatch(setPlaces(places));
-    })
-  }
-}
+        dispatch(setPlaces(places));
+      });
+  };
+};
 
 export const setPlaces = places => {
   return {
     type: SET_PLACES,
     places: places
-  }
-}
+  };
+};
 
 export const deletePlace = key => {
   return dispatch => {
-    fetch('https://awesome-places-7495b.firebaseio.com/places/' + key + '.json', {
-      method: 'DELETE'
-    })
-    .catch(err => console.log(err))
-    .then(res => res.json())
-    .then(parsedRes => {
-      console.log(('Deleted place!'));
-    })
-  }
-  // return {
-  //   type: DELETE_PLACE,
-  //   key
-  // };
+    fetch(
+      "https://awesome-places-7495b.firebaseio.com/places/" + key + ".json",
+      {
+        method: "DELETE"
+      }
+    )
+      .catch(err => console.log(err))
+      .then(res => res.json())
+      .then(parsedRes => {
+        console.log("Deleted place!");
+      });
+  };
+};
+
+export const removePlace = key => {
+  return {
+    type: DELETE_PLACE,
+    key
+  };
 };
 
 export const updateMode = () => {
