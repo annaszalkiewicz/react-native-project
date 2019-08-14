@@ -1,7 +1,7 @@
 // import { ADD_PLACE, DELETE_PLACE, SELECT_PLACE, DESELECT_PLACE } from './actionsTypes';
 import {
   SET_PLACES,
-  DELETE_PLACE,
+  REMOVE_PLACE,
   UPDATE_MODE,
   TRY_AUTH
 } from "./actionsTypes";
@@ -89,6 +89,7 @@ export const setPlaces = places => {
 
 export const deletePlace = key => {
   return dispatch => {
+    dispatch(removePlace(key));
     fetch(
       "https://awesome-places-7495b.firebaseio.com/places/" + key + ".json",
       {
@@ -105,8 +106,8 @@ export const deletePlace = key => {
 
 export const removePlace = key => {
   return {
-    type: DELETE_PLACE,
-    key
+    type: REMOVE_PLACE,
+    key: key
   };
 };
 
