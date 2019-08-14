@@ -6,11 +6,10 @@ import PlaceholderImage from "../../assets/placeholder-image.jpg";
 //   SELECT_PLACE,
 //   DESELECT_PLACE
 // } from "../actions/actionsTypes";
-import { SET_PLACES, DELETE_PLACE, UPDATE_MODE} from "../actions/actionsTypes";
+import { SET_PLACES, REMOVE_PLACE, UPDATE_MODE} from "../actions/actionsTypes";
 
 const initialState = {
   places: [],
-  selectedPlace: null,
   viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscape'
 };
 
@@ -34,13 +33,12 @@ const reducer = (state = initialState, action) => {
     //     })
     //   };
 
-    case DELETE_PLACE:
+    case REMOVE_PLACE:
       return {
         ...state,
         places: state.places.filter(place => {
           return place.key !== action.key;
         }),
-        selectedPlace: null
       };
 
     case UPDATE_MODE:
