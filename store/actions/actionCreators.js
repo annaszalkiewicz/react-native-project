@@ -118,11 +118,38 @@ export const updateMode = () => {
 };
 
 export const tryAuth = authData => {
-  return {
-    type: TRY_AUTH,
-    authData: authData
-  };
+  return dispatch => {
+    dispatch(signUP(authData));
+  }
+  // return {
+  //   type: TRY_AUTH,
+  //   authData: authData
+  // };
 };
+
+export const signUP = authData => {
+  return dispatch => {
+    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyByiOPOD3HmmaEKEI-xvjqsNbFiT_uNuWg', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      alert('Sign up failed. Please try again :(')
+    })
+    .then(res => res.json())
+    .then(parsedRes => {
+      console.log(parsedRes);
+    })
+  }
+}
 
 // export const selectPlace = key => {
 //   return {
