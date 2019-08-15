@@ -135,7 +135,33 @@ export const tryAuth = (authData, authMode) => {
 
 export const signIn = authData => {
   return dispatch => {
-    console.log('Login mode');
+    dispatch(startLoading());
+    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyByiOPOD3HmmaEKEI-xvjqsNbFiT_uNuWg', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      alert('Sign in failed. Please try again :(')
+      dispatch(stopLoading());
+    })
+    .then(res => res.json())
+    .then(parsedRes => {
+      dispatch(stopLoading());
+      if (parsedRes.error) {
+        alert('Sign in failed. Please try again :(');
+      }
+      else {
+        startTabs();
+      }
+    })
   }
 }
 
