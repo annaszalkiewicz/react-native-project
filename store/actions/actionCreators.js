@@ -129,6 +129,7 @@ export const tryAuth = authData => {
 
 export const signUP = authData => {
   return dispatch => {
+    dispatch(startLoading());
     fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyByiOPOD3HmmaEKEI-xvjqsNbFiT_uNuWg', {
       method: 'POST',
       body: JSON.stringify({
@@ -141,11 +142,13 @@ export const signUP = authData => {
       }
     })
     .catch(err => {
+      dispatch(stopLoading());
       console.log(err);
       alert('Sign up failed. Please try again :(')
     })
     .then(res => res.json())
     .then(parsedRes => {
+      dispatch(stopLoading());
       console.log(parsedRes);
     })
   }
