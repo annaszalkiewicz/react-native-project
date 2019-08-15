@@ -118,9 +118,14 @@ export const updateMode = () => {
   };
 };
 
-export const tryAuth = authData => {
+export const tryAuth = (authData, authMode) => {
   return dispatch => {
-    dispatch(signUP(authData));
+    if (authMode === 'login') {
+      dispatch(signIn(authData));
+    }
+    else {
+      dispatch(signUp(authData));
+    }
   }
   // return {
   //   type: TRY_AUTH,
@@ -128,7 +133,13 @@ export const tryAuth = authData => {
   // };
 };
 
-export const signUP = authData => {
+export const signIn = authData => {
+  return dispatch => {
+    console.log('Login mode');
+  }
+}
+
+export const signUp = authData => {
   return dispatch => {
     dispatch(startLoading());
     fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyByiOPOD3HmmaEKEI-xvjqsNbFiT_uNuWg', {
