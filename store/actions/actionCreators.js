@@ -20,11 +20,7 @@ export const addPlace = (name, location, image) => {
         })
       }
     )
-      .catch(err => {
-        console.log(err);
-        alert("Something went wrong. Please try again :(");
-        dispatch(stopLoading());
-      })
+
       .then(res => res.json())
       .then(parsedRes => {
         const placeData = {
@@ -40,17 +36,22 @@ export const addPlace = (name, location, image) => {
             body: JSON.stringify(placeData)
           }
         )
+          .then(res => res.json())
+          .then(parsedRes => {
+            console.log(parsedRes);
+            dispatch(stopLoading());
+          })
           .catch(err => {
             console.log(err);
             alert("Something went wrong. Please try again :(");
             dispatch(stopLoading());
           })
-          .then(res => res.json())
-          .then(parsedRes => {
-            console.log(parsedRes);
-            dispatch(stopLoading());
-          });
-      });
+      })
+      .catch(err => {
+        console.log(err);
+        alert("Something went wrong. Please try again :(");
+        dispatch(stopLoading());
+      })
   };
   // return {
   //   type: ADD_PLACE,
@@ -63,7 +64,6 @@ export const addPlace = (name, location, image) => {
 export const getPlaces = () => {
   return dispatch => {
     fetch("https://awesome-places-7495b.firebaseio.com/places.json")
-      .catch(err => console.log(err))
       .then(res => res.json())
       .then(parsedRes => {
         const places = [];
@@ -77,7 +77,12 @@ export const getPlaces = () => {
           });
         }
         dispatch(setPlaces(places));
-      });
+      })
+      .catch(err => { 
+        console.log(err);
+        alert('Something went wrong. Please try again :(');
+      })
+
   };
 };
 
@@ -97,11 +102,11 @@ export const deletePlace = key => {
         method: "DELETE"
       }
     )
-      .catch(err => console.log(err))
       .then(res => res.json())
       .then(parsedRes => {
         console.log("Deleted place!");
-      });
+      })
+      .catch(err => console.log(err))
   };
 };
 
@@ -138,13 +143,6 @@ export const tryAuth = (authData, authMode) => {
         "Content-Type": "application/json"
       }
     })
-      .catch(err => {
-        console.log(err);
-        authMode === "login"
-          ? alert("Sign in failed. Please try again :(")
-          : alert("Sign up failed. Please try again :(");
-        dispatch(stopLoading());
-      })
       .then(res => res.json())
       .then(parsedRes => {
         dispatch(stopLoading());
@@ -153,7 +151,14 @@ export const tryAuth = (authData, authMode) => {
         } else {
           startTabs();
         }
-      });
+      })
+      .catch(err => {
+        console.log(err);
+        authMode === "login"
+          ? alert("Sign in failed. Please try again :(")
+          : alert("Sign up failed. Please try again :(");
+        dispatch(stopLoading());
+      })
   };
 };
 
