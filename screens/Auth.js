@@ -70,7 +70,7 @@ class AuthScreen extends Component {
       email: this.state.controls.email.value,
       password: this.state.controls.password.value
     };
-    this.props.onSubmitForm(authData);
+    this.props.onSubmitForm(authData, this.state.authMode);
   };
 
   changeInputHandler = (key, value) => {
@@ -285,7 +285,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmitForm: authData => dispatch(tryAuth(authData))
+    onSubmitForm: (authData, authMode) => dispatch(tryAuth(authData, authMode))
   };
 };
 
