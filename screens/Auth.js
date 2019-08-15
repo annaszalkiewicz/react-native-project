@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-import startTabs from "./startMainTabs";
 import DefaultInput from "../components/UI/DefaultInput";
 import HeadingOne from "../components/UI/HeadingOne";
 import backgroundImage from "../assets/hills.jpg";
@@ -72,7 +71,6 @@ class AuthScreen extends Component {
       password: this.state.controls.password.value
     };
     this.props.onSubmitForm(authData);
-    startTabs();
   };
 
   changeInputHandler = (key, value) => {
