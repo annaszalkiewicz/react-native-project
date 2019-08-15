@@ -6,7 +6,8 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -211,17 +212,22 @@ class AuthScreen extends Component {
                 Switch to{" "}
                 {this.state.authMode === "login" ? "Sign up" : "Login"}
               </PrimaryButton>
-              <PrimaryButton
-                onPress={this.loginHandler}
-                disabled={
-                  !this.state.controls.email.valid ||
-                  !this.state.controls.password.valid ||
-                  (!this.state.controls.confirmPassword.valid &&
-                    this.state.authMode === "signup")
-                }
-              >
-                Submit
-              </PrimaryButton>
+              {this.props.isLoading && 
+                <ActivityIndicator size="large" />
+              }
+              {!this.props.isLoading && (
+                <PrimaryButton
+                  onPress={this.loginHandler}
+                  disabled={
+                    !this.state.controls.email.valid ||
+                    !this.state.controls.password.valid ||
+                    (!this.state.controls.confirmPassword.valid &&
+                      this.state.authMode === "signup")
+                  }
+                >
+                  Submit
+                </PrimaryButton>
+              )}
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
@@ -273,6 +279,12 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapStateToProps = state => {
+  return {
+    isLoading: state.uiReducer.isLoading
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     onSubmitForm: authData => dispatch(tryAuth(authData))
@@ -280,6 +292,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AuthScreen);
