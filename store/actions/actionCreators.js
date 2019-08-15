@@ -6,6 +6,7 @@ import {
   TRY_AUTH
 } from "./actionsTypes";
 import { startLoading, stopLoading } from "./uiActions";
+import startTabs from "../../screens/startMainTabs";
 
 export const addPlace = (name, location, image) => {
   return dispatch => {
@@ -142,14 +143,19 @@ export const signUP = authData => {
       }
     })
     .catch(err => {
-      dispatch(stopLoading());
       console.log(err);
       alert('Sign up failed. Please try again :(')
+      dispatch(stopLoading());
     })
     .then(res => res.json())
     .then(parsedRes => {
       dispatch(stopLoading());
-      console.log(parsedRes);
+      if (parsedRes.error) {
+        alert('Sign up failed. Please try again :(');
+      }
+      else {
+        startTabs();
+      }
     })
   }
 }
