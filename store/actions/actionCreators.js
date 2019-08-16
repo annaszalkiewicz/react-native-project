@@ -1,4 +1,5 @@
-// import { ADD_PLACE, DELETE_PLACE, SELECT_PLACE, DESELECT_PLACE } from './actionsTypes';
+import { AsyncStorage } from 'react-native';
+
 import {
   SET_PLACES,
   REMOVE_PLACE,
@@ -180,12 +181,19 @@ export const tryAuth = (authData, authMode) => {
         if (!parsedRes.idToken) {
           alert("Authentication failed. Please try again :(");
         } else {
-          dispatch(authSetToken(parsedRes.idToken));
+          dispatch(authStoreToken(parsedRes.idToken));
           startTabs();
         }
       });
   };
 };
+
+export const authStoreToken = token => {
+  return dispatch => {
+    dispatch(authSetToken(token));
+    AsyncStorage.setItem('ap:auth:token', token)
+  }
+}
 
 export const authSetToken = token => {
   return {
