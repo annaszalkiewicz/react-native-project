@@ -20,7 +20,6 @@ export const addPlace = (name, location, image) => {
         })
       }
     )
-
       .then(res => res.json())
       .then(parsedRes => {
         const placeData = {
@@ -45,13 +44,13 @@ export const addPlace = (name, location, image) => {
             console.log(err);
             alert("Something went wrong. Please try again :(");
             dispatch(stopLoading());
-          })
+          });
       })
       .catch(err => {
         console.log(err);
         alert("Something went wrong. Please try again :(");
         dispatch(stopLoading());
-      })
+      });
   };
   // return {
   //   type: ADD_PLACE,
@@ -78,11 +77,10 @@ export const getPlaces = () => {
         }
         dispatch(setPlaces(places));
       })
-      .catch(err => { 
+      .catch(err => {
         console.log(err);
-        alert('Something went wrong. Please try again :(');
-      })
-
+        alert("Something went wrong. Please try again :(");
+      });
   };
 };
 
@@ -106,7 +104,7 @@ export const deletePlace = key => {
       .then(parsedRes => {
         console.log("Deleted place!");
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
   };
 };
 
@@ -143,16 +141,6 @@ export const tryAuth = (authData, authMode) => {
         "Content-Type": "application/json"
       }
     })
-      .then(res => res.json())
-      .then(parsedRes => {
-        dispatch(stopLoading());
-        if (!parsedRes.idToken) {
-          alert("Authentication failed. Please try again :(");
-        } else {
-          dispatch(authSetToken(parsedRes.idToken))
-          startTabs();
-        }
-      })
       .catch(err => {
         console.log(err);
         authMode === "login"
@@ -160,6 +148,16 @@ export const tryAuth = (authData, authMode) => {
           : alert("Sign up failed. Please try again :(");
         dispatch(stopLoading());
       })
+      .then(res => res.json())
+      .then(parsedRes => {
+        dispatch(stopLoading());
+        if (!parsedRes.idToken) {
+          alert("Authentication failed. Please try again :(");
+        } else {
+          dispatch(authSetToken(parsedRes.idToken));
+          startTabs();
+        }
+      });
   };
 };
 
@@ -167,5 +165,19 @@ export const authSetToken = token => {
   return {
     type: AUTH_SET_TOKEN,
     token: token
-  }
-}
+  };
+};
+
+export const authGetToken = () => {
+  return (dispatch, getState) => {
+    const promise = new Promise((resolve, reject) => {
+      const token = getState().auth.token;
+      if (!token) {
+        reject();
+      } else {
+        resolve(token);
+      }
+    });
+    return promise;
+  };
+};
