@@ -3,7 +3,7 @@ import {
   SET_PLACES,
   REMOVE_PLACE,
   UPDATE_MODE,
-  TRY_AUTH
+  AUTH_SET_TOKEN
 } from "./actionsTypes";
 import { startLoading, stopLoading } from "./uiActions";
 import startTabs from "../../screens/startMainTabs";
@@ -162,15 +162,9 @@ export const tryAuth = (authData, authMode) => {
   };
 };
 
-// export const selectPlace = key => {
-//   return {
-//     type: SELECT_PLACE,
-//     key: key
-//   }
-// }
-
-// export const deselectPlace = () => {
-//   return {
-//     type: DESELECT_PLACE
-//   }
-// }
+export const authSetToken = token => {
+  return {
+    type: AUTH_SET_TOKEN,
+    token: token
+  }
+}
