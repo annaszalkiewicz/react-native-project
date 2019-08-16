@@ -10,19 +10,24 @@ import startTabs from "../../screens/startMainTabs";
 
 export const addPlace = (name, location, image) => {
   return dispatch => {
+    let authToken;
     dispatch(startLoading());
     dispatch(authGetToken())
       .catch(() => {
         alert("Sorry, we couldn't find valid token :(");
       })
       .then(token => {
+        authToken = token
         return fetch(
           "https://us-central1-awesome-places-7495b.cloudfunctions.net/storeImage",
           {
             method: "POST",
             body: JSON.stringify({
               image: image.base64
-            })
+            }),
+            headers: {
+              'Authorization': 'Bearer ' + authToken
+            }
           }
         )
       })
@@ -40,7 +45,7 @@ export const addPlace = (name, location, image) => {
         };
 
         return fetch(
-          "https://awesome-places-7495b.firebaseio.com/places.json",
+          "https://awesome-places-7495b.firebaseio.com/places.json?auth=" + authToken,
           {
             method: "POST",
             body: JSON.stringify(placeData)
