@@ -146,9 +146,10 @@ export const tryAuth = (authData, authMode) => {
       .then(res => res.json())
       .then(parsedRes => {
         dispatch(stopLoading());
-        if (parsedRes.error) {
+        if (!parsedRes.idToken) {
           alert("Authentication failed. Please try again :(");
         } else {
+          dispatch(authSetToken(parsedRes.idToken))
           startTabs();
         }
       })
