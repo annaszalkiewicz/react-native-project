@@ -181,22 +181,23 @@ export const tryAuth = (authData, authMode) => {
         if (!parsedRes.idToken) {
           alert("Authentication failed. Please try again :(");
         } else {
-          dispatch(authStoreToken(parsedRes.idToken, parsedRes.expiresIn));
+          dispatch(authStoreToken(parsedRes.idToken, parsedRes.expiresIn, parsedRes.refreshToken));
           startTabs();
         }
       });
   };
 };
 
-export const authStoreToken = (token, expiresIn) => {
+export const authStoreToken = (token, expiresIn, refresh) => {
   return dispatch => {
     dispatch(authSetToken(token));
 
     const now = new Date();
     const expire = now.getTime() + expiresIn * 1000;
 
-    AsyncStorage.setItem('ap:auth:token', token)
-    AsyncStorage.setItem('ap:auth:expDate', expire.toString())
+    AsyncStorage.setItem('ap:auth:token', token);
+    AsyncStorage.setItem('ap:auth:expDate', expire.toString());
+    AsyncStorage.setItem('ap:auth:refresh', refresh)
   }
 }
 
