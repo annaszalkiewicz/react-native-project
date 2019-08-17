@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from "react-native";
 
 import {
   SET_PLACES,
@@ -9,7 +9,7 @@ import {
 } from "./actionsTypes";
 import { startLoading, stopLoading } from "./uiActions";
 import startTabs from "../../screens/startMainTabs";
-import App from '../../App';
+import App from "../../App";
 
 export const addPlace = (name, location, image) => {
   return dispatch => {
@@ -20,7 +20,7 @@ export const addPlace = (name, location, image) => {
         alert("Sorry, we couldn't find valid token :(");
       })
       .then(token => {
-        authToken = token
+        authToken = token;
         return fetch(
           "https://us-central1-awesome-places-7495b.cloudfunctions.net/storeImage",
           {
@@ -29,10 +29,10 @@ export const addPlace = (name, location, image) => {
               image: image.base64
             }),
             headers: {
-              'Authorization': 'Bearer ' + authToken
+              Authorization: "Bearer " + authToken
             }
           }
-        )
+        );
       })
       .catch(err => {
         console.log(err);
@@ -48,7 +48,8 @@ export const addPlace = (name, location, image) => {
         };
 
         return fetch(
-          "https://awesome-places-7495b.firebaseio.com/places.json?auth=" + authToken,
+          "https://awesome-places-7495b.firebaseio.com/places.json?auth=" +
+            authToken,
           {
             method: "POST",
             body: JSON.stringify(placeData)
@@ -64,7 +65,7 @@ export const addPlace = (name, location, image) => {
             alert("Something went wrong. Please try again :(");
             dispatch(stopLoading());
           });
-      })
+      });
   };
   // return {
   //   type: ADD_PLACE,
@@ -78,7 +79,10 @@ export const getPlaces = () => {
   return dispatch => {
     dispatch(authGetToken())
       .then(token => {
-        return fetch("https://awesome-places-7495b.firebaseio.com/places.json?auth=" + token)
+        return fetch(
+          "https://awesome-places-7495b.firebaseio.com/places.json?auth=" +
+            token
+        );
       })
       .catch(() => {
         alert("No valid token found!");
@@ -114,25 +118,28 @@ export const setPlaces = places => {
 export const deletePlace = key => {
   return dispatch => {
     dispatch(authGetToken())
-    .catch(() => {
-      alert('No valid token found!');
-    })
-    .then(token => {
-      dispatch(removePlace(key));
-      return fetch(
-        "https://awesome-places-7495b.firebaseio.com/places/" + key + ".json?auth=" + token,
-        {
-          method: "DELETE"
-        }
-      )
-    })
-    
+      .catch(() => {
+        alert("No valid token found!");
+      })
+      .then(token => {
+        dispatch(removePlace(key));
+        return fetch(
+          "https://awesome-places-7495b.firebaseio.com/places/" +
+            key +
+            ".json?auth=" +
+            token,
+          {
+            method: "DELETE"
+          }
+        );
+      })
+
       .then(res => res.json())
       .then(parsedRes => {
         console.log("Deleted place!");
       })
       .catch(err => {
-        alert('Something went wrong. Please try again :(')
+        alert("Something went wrong. Please try again :(");
       });
   };
 };
@@ -183,7 +190,13 @@ export const tryAuth = (authData, authMode) => {
         if (!parsedRes.idToken) {
           alert("Authentication failed. Please try again :(");
         } else {
-          dispatch(authStoreToken(parsedRes.idToken, parsedRes.expiresIn, parsedRes.refreshToken));
+          dispatch(
+            authStoreToken(
+              parsedRes.idToken,
+              parsedRes.expiresIn,
+              parsedRes.refreshToken
+            )
+          );
           startTabs();
         }
       });
@@ -197,11 +210,11 @@ export const authStoreToken = (token, expiresIn, refresh) => {
     const now = new Date();
     const expire = now.getTime() + expiresIn * 1000;
 
-    AsyncStorage.setItem('ap:auth:token', token);
-    AsyncStorage.setItem('ap:auth:expDate', expire.toString());
-    AsyncStorage.setItem('ap:auth:refresh', refresh)
-  }
-}
+    AsyncStorage.setItem("ap:auth:token", token);
+    AsyncStorage.setItem("ap:auth:expDate", expire.toString());
+    AsyncStorage.setItem("ap:auth:refresh", refresh);
+  };
+};
 
 export const authSetToken = token => {
   return {
@@ -216,75 +229,80 @@ export const authGetToken = () => {
       const token = getState().auth.token;
       if (!token) {
         let fetchedToken;
-        AsyncStorage.getItem('ap:auth:token')
-        .catch(err => reject())
-        .then(tokenFromStorage => {
-          fetchedToken = tokenFromStorage;
-          if (!tokenFromStorage) {
-            reject();
-            return;
-          }
-          return AsyncStorage.getItem('ap:auth:expDate')
+        AsyncStorage.getItem("ap:auth:token")
+          .catch(err => reject())
+          .then(tokenFromStorage => {
+            fetchedToken = tokenFromStorage;
+            if (!tokenFromStorage) {
+              reject();
+              return;
+            }
+            return AsyncStorage.getItem("ap:auth:expDate");
+          })
+          .then(expDate => {
+            const parsedExpDate = new Date(parseInt(expDate));
+            const now = new Date();
 
-        })
-        .then(expDate => {
-          const parsedExpDate = new Date(parseInt(expDate));
-          const now = new Date();
-
-          if (parsedExpDate > now) {
-            dispatch(authSetToken(fetchedToken))
-            resolve(fetchedToken)
-          } else {
-            reject();
-          }
-
-        }
-        )
-        .catch(err => reject());
+            if (parsedExpDate > now) {
+              dispatch(authSetToken(fetchedToken));
+              resolve(fetchedToken);
+            } else {
+              reject();
+            }
+          })
+          .catch(err => reject());
       } else {
         resolve(token);
       }
     });
     return promise
-    .catch(err => {
-      return AsyncStorage.getItem('ap:auth:refresh')
-        .then(refreshToken => {
-          return fetch('https://securetoken.googleapis.com/v1/token?key=AIzaSyByiOPOD3HmmaEKEI-xvjqsNbFiT_uNuWg', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: "grant_type=refresh_token&refresh_token=" + refreshToken
+      .catch(err => {
+        return AsyncStorage.getItem("ap:auth:refresh")
+          .then(refreshToken => {
+            return fetch(
+              "https://securetoken.googleapis.com/v1/token?key=AIzaSyByiOPOD3HmmaEKEI-xvjqsNbFiT_uNuWg",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "grant_type=refresh_token&refresh_token=" + refreshToken
+              }
+            );
           })
-        })
-        .then(res => res.json())
-        .then(parsedRes => {
-          if (parsedRes.id_token) {
-            dispatch(authStoreToken(parsedRes.id_token, parsedRes.expires_in, parsedRes.refresh_token))
-            return parsedRes.id_token;
-          }
-          else {
-            dispatch(authClearStorage());
-          }
-        })
-    })
-    .then(token => {
-      if (!token) {
-        throw(new Error());
-      } else {
-        return token;
-      }
-    })
+          .then(res => res.json())
+          .then(parsedRes => {
+            if (parsedRes.id_token) {
+              dispatch(
+                authStoreToken(
+                  parsedRes.id_token,
+                  parsedRes.expires_in,
+                  parsedRes.refresh_token
+                )
+              );
+              return parsedRes.id_token;
+            } else {
+              dispatch(authClearStorage());
+            }
+          });
+      })
+      .then(token => {
+        if (!token) {
+          throw new Error();
+        } else {
+          return token;
+        }
+      });
   };
 };
 
 export const authClearStorage = () => {
   return dispatch => {
-    AsyncStorage.removeItem('ap:auth:token');
-    AsyncStorage.removeItem('ap:auth:expDate');
-    return AsyncStorage.removeItem('ap:auth:refresh');
-  }
-}
+    AsyncStorage.removeItem("ap:auth:token");
+    AsyncStorage.removeItem("ap:auth:expDate");
+    return AsyncStorage.removeItem("ap:auth:refresh");
+  };
+};
 
 export const autoSignin = () => {
   return dispatch => {
@@ -292,23 +310,21 @@ export const autoSignin = () => {
       .then(token => {
         startTabs();
       })
-      .catch(err => console.log('Failed to find token! :(')
-      )
-  }
-}
+      .catch(err => console.log("Failed to find token! :("));
+  };
+};
 
 export const authLogout = () => {
   return dispatch => {
-    dispatch(authClearStorage())
-      .then(() => {
-        App();
-      })
-    dispatch(authRemoveToken())
-  }
-}
+    dispatch(authClearStorage()).then(() => {
+      App();
+    });
+    dispatch(authRemoveToken());
+  };
+};
 
 export const authRemoveToken = () => {
   return {
     type: AUTH_REMOVE_TOKEN
-  }
-}
+  };
+};
