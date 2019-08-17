@@ -207,7 +207,12 @@ export const authGetToken = () => {
     const promise = new Promise((resolve, reject) => {
       const token = getState().auth.token;
       if (!token) {
-        reject();
+        AsyncStorage.getItem('ap:auth:token')
+        .catch(err => reject())
+        .then(tokenFromstorage => {
+          dispatch(authSetToken(tokenFromstorage))
+          resolve(tokenFromstorage)
+        })
       } else {
         resolve(token);
       }
