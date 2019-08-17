@@ -303,5 +303,12 @@ export const authLogout = () => {
       .then(() => {
         App();
       })
+    dispatch(authRemoveToken())
+  }
+}
+
+export const authRemoveToken = () => {
+  return {
+    type: AUTH_REMOVE_TOKEN
   }
 }
