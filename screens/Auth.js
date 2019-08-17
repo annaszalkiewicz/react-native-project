@@ -16,7 +16,7 @@ import HeadingOne from "../components/UI/HeadingOne";
 import backgroundImage from "../assets/hills.jpg";
 import PrimaryButton from "../components/UI/PrimaryButton";
 import validate from "../utility/validation";
-import { tryAuth } from "../store/actions/actionCreators";
+import { tryAuth, autoSignin } from "../store/actions/actionCreators";
 
 class AuthScreen extends Component {
   state = {
@@ -58,6 +58,10 @@ class AuthScreen extends Component {
   componentWillUnmount = () => {
     Dimensions.removeEventListener("change", this.updateMode);
   };
+
+  componentDidMount = () => {
+    this.props.onAutosignIn();
+  }
 
   updateMode = dims => {
     this.setState({
@@ -285,7 +289,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmitForm: (authData, authMode) => dispatch(tryAuth(authData, authMode))
+    onSubmitForm: (authData, authMode) => dispatch(tryAuth(authData, authMode)),
+    onAutosignIn: () => dispatch(autoSignin())
   };
 };
 
