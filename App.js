@@ -35,7 +35,9 @@ Navigation.registerComponent(
 );
 Navigation.registerComponent(
   'my-awesome-places.SideDrawerScreen',
-  () => SideDrawerScreen
+  () => SideDrawerScreen,
+  store,
+  Provider
 );
 
 export default Navigation.startSingleScreenApp({
