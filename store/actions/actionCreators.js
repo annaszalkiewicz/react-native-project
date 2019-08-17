@@ -205,10 +205,10 @@ export const tryAuth = (authData, authMode) => {
 
 export const authStoreToken = (token, expiresIn, refresh) => {
   return dispatch => {
-    dispatch(authSetToken(token));
-
     const now = new Date();
     const expire = now.getTime() + expiresIn * 1000;
+
+    dispatch(authSetToken(token, expire));
 
     AsyncStorage.setItem("ap:auth:token", token);
     AsyncStorage.setItem("ap:auth:expDate", expire.toString());
@@ -216,10 +216,11 @@ export const authStoreToken = (token, expiresIn, refresh) => {
   };
 };
 
-export const authSetToken = token => {
+export const authSetToken = (token, expire) => {
   return {
     type: AUTH_SET_TOKEN,
-    token: token
+    token: token,
+    expire: expire
   };
 };
 
