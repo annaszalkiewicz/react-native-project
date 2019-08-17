@@ -209,9 +209,13 @@ export const authGetToken = () => {
       if (!token) {
         AsyncStorage.getItem('ap:auth:token')
         .catch(err => reject())
-        .then(tokenFromstorage => {
-          dispatch(authSetToken(tokenFromstorage))
-          resolve(tokenFromstorage)
+        .then(tokenFromStorage => {
+          if (!tokenFromStorage) {
+            reject();
+            return;
+          }
+          dispatch(authSetToken(tokenFromStorage))
+          resolve(tokenFromStorage)
         })
       } else {
         resolve(token);
@@ -220,3 +224,14 @@ export const authGetToken = () => {
     return promise;
   };
 };
+
+export const autoSignin = () => {
+  return dispatch => {
+    dispatch(authGetToken())
+      .then(token => {
+        startTabs();
+      })
+      .catch(err => console.log('Failed to find token! :(')
+      )
+  }
+}
