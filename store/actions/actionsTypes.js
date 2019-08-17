@@ -5,5 +5,6 @@ export const TRY_AUTH = 'TRY_AUTH';
 export const START_LOADING = 'START_LOADING';
 export const STOP_LOADING = 'STOP_LOADING';
 export const AUTH_SET_TOKEN = 'AUTH_SET_TOKEN';
+export const AUTH_REMOVE_TOKEN = 'AUTH_REMOVE_TOKEN';
 // export const SELECT_PLACE = 'SELECT_PLACE';
 // export const DESELECT_PLACE = 'DESELECT_PLACE';
