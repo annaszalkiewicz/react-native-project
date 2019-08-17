@@ -4,10 +4,12 @@ import {
   SET_PLACES,
   REMOVE_PLACE,
   UPDATE_MODE,
-  AUTH_SET_TOKEN
+  AUTH_SET_TOKEN,
+  AUTH_REMOVE_TOKEN
 } from "./actionsTypes";
 import { startLoading, stopLoading } from "./uiActions";
 import startTabs from "../../screens/startMainTabs";
+import App from '../../App';
 
 export const addPlace = (name, location, image) => {
   return dispatch => {
@@ -280,6 +282,7 @@ export const authClearStorage = () => {
   return dispatch => {
     AsyncStorage.removeItem('ap:auth:token');
     AsyncStorage.removeItem('ap:auth:expDate');
+    return AsyncStorage.removeItem('ap:auth:refresh');
   }
 }
 
@@ -291,5 +294,14 @@ export const autoSignin = () => {
       })
       .catch(err => console.log('Failed to find token! :(')
       )
+  }
+}
+
+export const authLogout = () => {
+  return dispatch => {
+    dispatch(authClearStorage())
+      .then(() => {
+        App();
+      })
   }
 }
