@@ -228,7 +228,7 @@ export const authGetToken = () => {
   return (dispatch, getState) => {
     const promise = new Promise((resolve, reject) => {
       const token = getState().auth.token;
-      const expire = getState().auth.expire
+      const expire = getState().auth.expire;
       if (!token || new Date(expire) <= new Date()) {
         let fetchedToken;
         AsyncStorage.getItem("ap:auth:token")
