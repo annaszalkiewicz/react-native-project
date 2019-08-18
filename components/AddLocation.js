@@ -57,6 +57,20 @@ class AddLocation extends Component {
     })
   }
 
+  reset = () => {
+    this.setState({
+      focusedRegion: {
+        latitude: 53.1256049,
+        longitude: 17.8981004,
+        latitudeDelta: 0.1,
+        longitudeDelta:
+          (Dimensions.get("window").width / Dimensions.get("window").height) *
+          0.1
+      },
+      locationSelected: false
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
