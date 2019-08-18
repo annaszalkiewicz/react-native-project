@@ -81,6 +81,28 @@ class SharePlaceScreen extends Component {
       this.state.controls.location.value,
       this.state.controls.image.value
     );
+    this.reset();
+  };
+
+  reset = () => {
+    this.setState({
+      controls: {
+        placeName: {
+          value: "",
+          valid: false,
+          minLength: 1,
+          touched: false
+        },
+        location: {
+          value: null,
+          valid: false
+        },
+        image: {
+          value: null,
+          valid: false
+        }
+      }
+    });
   };
 
   locationPickedHandler = location => {
@@ -128,9 +150,7 @@ class SharePlaceScreen extends Component {
                   valid={this.state.controls.placeName.valid}
                   touched={this.state.controls.placeName.touched}
                 />
-                {this.props.isLoading &&
-                  <ActivityIndicator size="large" />
-                }
+                {this.props.isLoading && <ActivityIndicator size="large" />}
                 {!this.props.isLoading && (
                   <PrimaryButton
                     onPress={this.submitHandler}
