@@ -25,6 +25,12 @@ class AddImage extends Component {
     });
   }
 
+  reset = () => {
+    this.setState({
+      pickedImage: null
+    })
+  }
+
   render() {
     return (
       <React.Fragment>

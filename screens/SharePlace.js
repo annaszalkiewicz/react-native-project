@@ -82,6 +82,7 @@ class SharePlaceScreen extends Component {
       this.state.controls.image.value
     );
     this.reset();
+    this.imagePicker.reset();
   };
 
   reset = () => {
@@ -142,7 +143,10 @@ class SharePlaceScreen extends Component {
               <HeroImage />
               <View style={styles.container}>
                 <HeadingOne>Add new place!</HeadingOne>
-                <AddImage imagePicked={this.imagePickedHandler} />
+                <AddImage 
+                  imagePicked={this.imagePickedHandler}
+                  ref={ref => (this.imagePicker = ref)}
+                />
                 <AddLocation locationPicked={this.locationPickedHandler} />
                 <NewPlaceForm
                   placeName={this.state.controls.placeName.value}
