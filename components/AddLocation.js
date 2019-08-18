@@ -77,6 +77,7 @@ class AddLocation extends Component {
         <MapView
           style={styles.map}
           initialRegion={this.state.focusedRegion}
+          region={!this.state.locationSelected ? this.state.focusedRegion : null}
           onPress={this.pickLocationHandler}
           ref={map => this.map = map}
         >
