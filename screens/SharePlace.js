@@ -70,6 +70,11 @@ class SharePlaceScreen extends Component {
 
   onNavigatorEvent = event => {
     console.log(event);
+    if (this.props.placeAdded) {
+      if (event.id === 'willAppear') {
+        this.props.startAddPlace();
+      }
+    }
 
     if (event.type === "NavBarButtonPress") {
       if (event.id === "sideDrawerToggle") {
@@ -204,7 +209,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onAddPlace: (name, location, image) =>
-      dispatch(addPlace(name, location, image))
+      dispatch(addPlace(name, location, image)),
+      startAddPlace: () => dispatch(startAddPlace())
   };
 };
 
