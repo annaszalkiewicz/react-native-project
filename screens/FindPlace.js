@@ -29,6 +29,12 @@ class FindPlaceScreen extends Component {
   }
 
   onNavigatorEvent = event => {
+    if (this.props.placeAdded) {
+      if (event.id === 'willAppear') {
+        this.props.onLoadPlaces();
+      }
+    }
+
     if (event.type === "NavBarButtonPress") {
       if (event.id === "sideDrawerToggle") {
         this.props.navigator.toggleDrawer({
@@ -79,7 +85,6 @@ class FindPlaceScreen extends Component {
 
     return (
       <React.Fragment>
-        <HeroImage />
         {!placeListLoaded && (
           <View style={styles.container}>
             <Animated.View
@@ -140,7 +145,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    places: state.places.places
+    places: state.places.places,
+    placeAdded: state.places.placeAdded
   };
 };
 
