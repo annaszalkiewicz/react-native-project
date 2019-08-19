@@ -5,7 +5,8 @@ import {
   REMOVE_PLACE,
   UPDATE_MODE,
   AUTH_SET_TOKEN,
-  AUTH_REMOVE_TOKEN
+  AUTH_REMOVE_TOKEN,
+  PLACE_ADDED
 } from "./actionsTypes";
 import { startLoading, stopLoading } from "./uiActions";
 import startTabs from "../../screens/startMainTabs";
@@ -64,6 +65,7 @@ export const addPlace = (name, location, image) => {
             console.log(err);
             alert("Something went wrong. Please try again :(");
             dispatch(stopLoading());
+            dispatch(placeAdded());
           });
       });
   };
@@ -74,6 +76,12 @@ export const addPlace = (name, location, image) => {
   //   image: image
   // };
 };
+
+export const placeAdded = () => {
+  return {
+    type: PLACE_ADDED
+  }
+}
 
 export const getPlaces = () => {
   return dispatch => {
