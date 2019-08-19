@@ -6,7 +6,7 @@ import PlaceholderImage from "../../assets/placeholder-image.jpg";
 //   SELECT_PLACE,
 //   DESELECT_PLACE
 // } from "../actions/actionsTypes";
-import { SET_PLACES, REMOVE_PLACE, UPDATE_MODE, PLACE_ADDED} from "../actions/actionsTypes";
+import { SET_PLACES, REMOVE_PLACE, UPDATE_MODE, PLACE_ADDED, START_ADD_PLACE} from "../actions/actionsTypes";
 
 const initialState = {
   places: [],
@@ -22,6 +22,12 @@ const reducer = (state = initialState, action) => {
         places: action.places
       }
 
+    case START_ADD_PLACE:
+      return {
+        ...state,
+        placeAdded: false
+      }
+      
     case PLACE_ADDED:
       return {
         ...state,
