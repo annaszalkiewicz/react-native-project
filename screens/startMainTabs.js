@@ -12,10 +12,10 @@ const startTabs = () => {
     Navigation.startTabBasedApp({
       tabs: [
         {
-          screen: 'my-awesome-places.SharePlaceScreen',
-          label: 'Share Place',
-          title: 'Share Place',
-          icon: sources[0],
+          screen: 'my-awesome-places.FindPlaceScreen',
+          label: 'Find Place',
+          title: 'Find Place',
+          icon: sources[1],
           navigatorButtons: {
             leftButtons: [{
               icon: sources[2],
@@ -26,10 +26,10 @@ const startTabs = () => {
           }
         },
         {
-          screen: 'my-awesome-places.FindPlaceScreen',
-          label: 'Find Place',
-          title: 'Find Place',
-          icon: sources[1],
+          screen: 'my-awesome-places.SharePlaceScreen',
+          label: 'Share Place',
+          title: 'Share Place',
+          icon: sources[0],
           navigatorButtons: {
             leftButtons: [{
               icon: sources[2],
