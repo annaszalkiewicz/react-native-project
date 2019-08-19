@@ -6,11 +6,12 @@ import PlaceholderImage from "../../assets/placeholder-image.jpg";
 //   SELECT_PLACE,
 //   DESELECT_PLACE
 // } from "../actions/actionsTypes";
-import { SET_PLACES, REMOVE_PLACE, UPDATE_MODE} from "../actions/actionsTypes";
+import { SET_PLACES, REMOVE_PLACE, UPDATE_MODE, PLACE_ADDED} from "../actions/actionsTypes";
 
 const initialState = {
   places: [],
-  viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscape'
+  viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscape',
+  placeAdded: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +20,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         places: action.places
+      }
+
+    case PLACE_ADDED:
+      return {
+        ...state,
+        placeAdded: true
       }
     // case ADD_PLACE:
     //   return {
