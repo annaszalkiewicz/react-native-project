@@ -16,8 +16,8 @@ import App from "../../App";
 export const startAddPlace = () => {
   return {
     type: START_ADD_PLACE
-  }
-}
+  };
+};
 
 export const addPlace = (name, location, image) => {
   return dispatch => {
@@ -62,18 +62,18 @@ export const addPlace = (name, location, image) => {
             method: "POST",
             body: JSON.stringify(placeData)
           }
-        )
-          .then(res => res.json())
-          .then(parsedRes => {
-            console.log(parsedRes);
-            dispatch(stopLoading());
-            dispatch(placeAdded());
-          })
-          .catch(err => {
-            console.log(err);
-            alert("Something went wrong. Please try again :(");
-            dispatch(stopLoading());
-          });
+        );
+      })
+      .then(res => res.json())
+      .then(parsedRes => {
+        console.log(parsedRes);
+        dispatch(stopLoading());
+        dispatch(placeAdded());
+      })
+      .catch(err => {
+        console.log(err);
+        alert("Something went wrong. Please try again :(");
+        dispatch(stopLoading());
       });
   };
   // return {
@@ -87,8 +87,8 @@ export const addPlace = (name, location, image) => {
 export const placeAdded = () => {
   return {
     type: PLACE_ADDED
-  }
-}
+  };
+};
 
 export const getPlaces = () => {
   return dispatch => {
