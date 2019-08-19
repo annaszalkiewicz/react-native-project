@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-import { addPlace } from "../store/actions/actionCreators";
+import { addPlace, startAddPlace } from "../store/actions/actionCreators";
 import HeroImage from "../components/HeroImage";
 import HeadingOne from "../components/UI/HeadingOne";
 import AddImage from "../components/AddImage";
@@ -41,6 +41,12 @@ class SharePlaceScreen extends Component {
       }
     }
   };
+
+  componentDidUpdate = () => {
+    if (this.props.placeAdded) {
+      this.props.navigator.switchToTab({ tabIndex: 0 })
+    }
+  } 
 
   changeTextHandler = val => {
     this.setState(prevState => {
@@ -190,7 +196,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.uiReducer.isLoading
+    isLoading: state.uiReducer.isLoading,
+    placeAdded: state.places.placeAdded
   };
 };
 
