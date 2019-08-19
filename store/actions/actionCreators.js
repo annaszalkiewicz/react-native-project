@@ -6,11 +6,18 @@ import {
   UPDATE_MODE,
   AUTH_SET_TOKEN,
   AUTH_REMOVE_TOKEN,
-  PLACE_ADDED
+  PLACE_ADDED,
+  START_ADD_PLACE
 } from "./actionsTypes";
 import { startLoading, stopLoading } from "./uiActions";
 import startTabs from "../../screens/startMainTabs";
 import App from "../../App";
+
+export const startAddPlace = () => {
+  return {
+    type: START_ADD_PLACE
+  }
+}
 
 export const addPlace = (name, location, image) => {
   return dispatch => {
@@ -60,12 +67,12 @@ export const addPlace = (name, location, image) => {
           .then(parsedRes => {
             console.log(parsedRes);
             dispatch(stopLoading());
+            dispatch(placeAdded());
           })
           .catch(err => {
             console.log(err);
             alert("Something went wrong. Please try again :(");
             dispatch(stopLoading());
-            dispatch(placeAdded());
           });
       });
   };
