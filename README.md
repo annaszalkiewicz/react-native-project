@@ -20,3 +20,14 @@ $ npm install
 ```
 $ react-native run-android
 ```
+## Dependencies
+
+* [React](https://reactjs.org/)
+* [React Native](https://github.com/facebook/react-native)
+* [React Redux](https://github.com/reduxjs/react-redux)
+* [Redux](https://redux.js.org/)
+* [Redux Thunk](https://github.com/reduxjs/redux-thunk)
+* [React Native Image Picker](https://github.com/react-native-community/react-native-image-picker)
+* [React Native Maps](https://github.com/react-native-community/react-native-maps)
+* [React Native Navigation](https://github.com/wix/react-native-navigation)
+* [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons)
